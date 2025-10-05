@@ -126,7 +126,6 @@ class AuthController extends Controller
         $user->password = Hash::make($request->password);
         $user->save();
 
-        // Hapus token
         DB::table('password_reset_tokens')->where('email', $email)->delete();
 
         return response()->json(['message' => 'Password reset successful.']);
