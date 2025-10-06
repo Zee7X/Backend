@@ -198,10 +198,19 @@ API base URL: `http://127.0.0.1:8000/api`
 
 ---
 
+### Postman Collection
+
+You can import the API collection to Postman to test all endpoints:
+
+- Collection: [`postman/Backend Test.postman_collection.json`](postman/Backend Test.postman_collection.json)
+
+Steps:
+
+1. Open Postman → Click **Import** → Choose **File** → Select `Backend Test.postman_collection.json`.
+2. Optionally, set environment variables for `base_url` and `Authorization` token.
+3. Start testing all admin and user API endpoints.
+
+
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
-
-```
-
----
