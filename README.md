@@ -118,8 +118,8 @@ The seeder creates a default admin account:
 
 | Field    | Value                                         |
 | -------- | --------------------------------------------- |
-| Email    | [admin@example.com](mailto:admin@example.com) |
-| Password | password123                                   |
+| Email    | [admin@test.com](mailto:admin@test.com) |
+| Password | password                                   |
 
 > Use these credentials to log in to admin endpoints.
 
