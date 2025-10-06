@@ -1,66 +1,207 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Laravel Business & Bookmark API
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+A RESTful API project with **admin and user management**, **businesses**, **categories**, and **user bookmarks** using Laravel 10 and Sanctum authentication.
 
-## About Laravel
+---
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+## Table of Contents
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+- [Features](#features)
+- [Requirements](#requirements)
+- [Installation](#installation)
+- [Environment Setup](#environment-setup)
+- [Database Setup](#database-setup)
+- [Running Migrations and Seeders](#running-migrations-and-seeders)
+- [Default Admin Credentials](#default-admin-credentials)
+- [Running the Application](#running-the-application)
+- [API Endpoints](#api-endpoints)
+- [License](#license)
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+---
 
-## Learning Laravel
+## Features
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework.
+- Admin and user authentication using Laravel Sanctum.
+- CRUD for **Businesses** and **Categories** (Admin only).
+- User **Bookmarks** for businesses.
+- Business listing with slug-based route.
+- Clean architecture with service and repository layers.
 
-You may also try the [Laravel Bootcamp](https://bootcamp.laravel.com), where you will be guided through building a modern Laravel application from scratch.
+---
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Requirements
 
-## Laravel Sponsors
+- PHP >= 8.1  
+- Composer  
+- MySQL / MariaDB  
+- Laravel 10.x  
+- Node.js & NPM (if using frontend)  
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+---
 
-### Premium Partners
+## Installation
 
-- **[Vehikl](https://vehikl.com/)**
-- **[Tighten Co.](https://tighten.co)**
-- **[WebReinvent](https://webreinvent.com/)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel/)**
-- **[Cyber-Duck](https://cyber-duck.co.uk)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Jump24](https://jump24.co.uk)**
-- **[Redberry](https://redberry.international/laravel/)**
-- **[Active Logic](https://activelogic.com)**
-- **[byte5](https://byte5.de)**
-- **[OP.GG](https://op.gg)**
+1. Clone the repository:
 
-## Contributing
+```bash
+git clone https://github.com/username/project-name.git
+cd project-name
+````
 
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
+2. Install PHP dependencies:
 
-## Code of Conduct
+```bash
+composer install
+```
 
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
+3. Install Node dependencies (if using frontend):
 
-## Security Vulnerabilities
+```bash
+npm install
+npm run dev
+```
 
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
+---
+
+## Environment Setup
+
+1. Copy `.env.example` to `.env`:
+
+```bash
+cp .env.example .env
+```
+
+2. Update `.env` with your database and app settings:
+
+```env
+DB_CONNECTION=mysql
+DB_HOST=127.0.0.1
+DB_PORT=3306
+DB_DATABASE=your_database_name
+DB_USERNAME=root
+DB_PASSWORD=
+```
+
+3. Generate Laravel application key:
+
+```bash
+php artisan key:generate
+```
+
+---
+
+## Database Setup
+
+Create a database in MySQL matching the `DB_DATABASE` in your `.env` file.
+
+---
+
+## Running Migrations and Seeders
+
+1. Run migrations:
+
+```bash
+php artisan migrate
+```
+
+2. Seed the database with default data, including admin:
+
+```bash
+php artisan db:seed
+```
+
+---
+
+## Default Admin Credentials
+
+The seeder creates a default admin account:
+
+| Field    | Value                                         |
+| -------- | --------------------------------------------- |
+| Email    | [admin@example.com](mailto:admin@example.com) |
+| Password | password123                                   |
+
+> Use these credentials to log in to admin endpoints.
+
+---
+
+## Running the Application
+
+Start the development server:
+
+```bash
+php artisan serve
+```
+
+API base URL: `http://127.0.0.1:8000/api`
+
+---
+
+## API Endpoints
+
+### Admin Authentication
+
+| Method | Endpoint           | Description |
+| ------ | ------------------ | ----------- |
+| POST   | `/api/admin/login` | Admin login |
+
+### User Authentication
+
+| Method | Endpoint               | Description                 |
+| ------ | ---------------------- | --------------------------- |
+| POST   | `/api/register`        | User registration           |
+| POST   | `/api/login`           | User login                  |
+| POST   | `/api/forgot-password` | Request password reset      |
+| POST   | `/api/reset-password`  | Reset password              |
+| POST   | `/api/logout`          | Logout user (requires auth) |
+
+---
+
+### User Routes (Auth Required)
+
+| Method | Endpoint                                   | Description         |
+| ------ | ------------------------------------------ | ------------------- |
+| GET    | `/api/user/bookmarks`                      | List user bookmarks |
+| POST   | `/api/businesses/{business:slug}/bookmark` | Add a bookmark      |
+| DELETE | `/api/businesses/{business:slug}/bookmark` | Remove a bookmark   |
+
+---
+
+### Businesses (User)
+
+| Method | Endpoint                          | Description            |
+| ------ | --------------------------------- | ---------------------- |
+| GET    | `/api/businesses`                 | List all businesses    |
+| GET    | `/api/businesses/{business:slug}` | View a single business |
+
+---
+
+### Admin Routes (Auth + Admin Middleware)
+
+#### Businesses
+
+| Method | Endpoint                           | Description                  |
+| ------ | ---------------------------------- | ---------------------------- |
+| GET    | `/api/admin/businesses`            | List businesses (DataTables) |
+| POST   | `/api/admin/businesses`            | Create a business            |
+| PUT    | `/api/admin/businesses/{business}` | Update a business            |
+| DELETE | `/api/admin/businesses/{business}` | Delete a business            |
+
+#### Categories
+
+| Method | Endpoint                           | Description       |
+| ------ | ---------------------------------- | ----------------- |
+| GET    | `/api/admin/categories`            | List categories   |
+| POST   | `/api/admin/categories`            | Create a category |
+| PUT    | `/api/admin/categories/{category}` | Update a category |
+| DELETE | `/api/admin/categories/{category}` | Delete a category |
+
+---
 
 ## License
 
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+```
+
+---

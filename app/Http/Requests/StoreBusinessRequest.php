@@ -14,15 +14,15 @@ class StoreBusinessRequest extends FormRequest
     public function rules()
     {
         return [
-            'category_id' => 'required|exists:categories,id',
-            'name' => 'required|string|max:255',
-            'slug' => 'nullable|string|max:255|unique:businesses,slug',
-            'description' => 'required|string',
-            'logo_path' => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
-            'phone_number' => 'required|string|max:20',
-            'email' => 'required|email|max:255',
-            'address' => 'required|string|max:255',
-            'city' => 'required|string|max:100',
+            'category_id'   => 'required|exists:categories,id',
+            'name'          => 'required|string|max:255',
+            'slug'          => 'nullable|string|max:255|unique:businesses,slug',
+            'description'   => 'required|string',
+            'logo_path'     => 'nullable|image|mimes:jpg,jpeg,png,gif,svg|max:2048',
+            'phone_number'  => 'required|string|max:20',
+            'email'         => 'required|email|max:255',
+            'address'       => 'required|string|max:255',
+            'city'          => 'required|string|max:100',
         ];
     }
 

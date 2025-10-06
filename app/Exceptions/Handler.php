@@ -6,6 +6,7 @@ use Illuminate\Foundation\Exceptions\Handler as ExceptionHandler;
 use Throwable;
 use Illuminate\Auth\AuthenticationException;
 use Illuminate\Validation\ValidationException;
+use Illuminate\Database\Eloquent\ModelNotFoundException;
 
 class Handler extends ExceptionHandler
 {
@@ -25,8 +26,17 @@ class Handler extends ExceptionHandler
      */
     public function register(): void
     {
-        $this->reportable(function (Throwable $e) {
-            //
+        $this->renderable(function (\App\Exceptions\ResetPasswordException $e, $request) {
+            return response()->json([
+                'error'   => class_basename($e),
+                'message' => $e->getMessage(),
+            ], $e->getStatus());
+        });
+
+        $this->renderable(function (\App\Exceptions\CategoryException $e, $request) {
+            return response()->json([
+                'message' => $e->getMessage()
+            ], 400);
         });
     }
 
@@ -60,7 +70,6 @@ class Handler extends ExceptionHandler
             ], 500);
         }
 
-        // Default Laravel exception rendering
         return parent::render($request, $exception);
     }
 }

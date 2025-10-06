@@ -10,17 +10,22 @@ class BusinessResource extends JsonResource
     public function toArray($request)
     {
         return [
-            'id' => $this->id,
-            'name' => $this->name,
-            'slug' => $this->slug,
-            'category' => $this->category->name,
+            'id'          => $this->id,
+            'name'        => $this->name,
+            'slug'        => $this->slug,
             'description' => $this->description,
-            'logo_url' => $this->logo_path ? asset('storage/' . $this->logo_path) : null,
             'phone_number' => $this->phone_number,
-            'email' => $this->email,
-            'address' => $this->address,
-            'city' => $this->city,
-            'created_at' => $this->created_at,
+            'email'       => $this->email,
+            'address'     => $this->address,
+            'city'        => $this->city,
+            'logo_url'    => $this->logo_path ? asset('storage/' . $this->logo_path) : null,
+            'category'    => [
+                'id'   => $this->category?->id,
+                'name' => $this->category?->name,
+                'slug' => $this->category?->slug,
+            ],
+            'created_at'  => $this->created_at,
+            'updated_at'  => $this->updated_at,
         ];
     }
 }

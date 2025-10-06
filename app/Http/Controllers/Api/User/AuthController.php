@@ -4,30 +4,31 @@ namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
-use App\Models\User;
-use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\DB;
-use Illuminate\Support\Str;
-use Illuminate\Support\Facades\Validator;
-use App\Exceptions\UserRegistrationException;
 use App\Services\AuthUserService;
 use App\Http\Requests\RegisterUserRequest;
 use App\Http\Resources\UserResource;
-
+use App\Http\Requests\LoginUserRequest;
+use App\Http\Requests\ForgotPasswordRequest;
+use App\Services\ForgotPasswordService;
+use App\Http\Requests\ResetPasswordRequest;
+use App\Services\ResetPasswordService;
 
 class AuthController extends Controller
 {
-
     protected AuthUserService $authUserService;
+    protected ForgotPasswordService $forgotPasswordService;
+    protected ResetPasswordService $resetPasswordService;
 
-    public function __construct(AuthUserService $authUserService)
+    public function __construct(AuthUserService $authUserService, ForgotPasswordService $forgotPasswordService, ResetPasswordService $resetPasswordService)
     {
         $this->authUserService = $authUserService;
+        $this->forgotPasswordService = $forgotPasswordService;
+        $this->resetPasswordService = $resetPasswordService;
     }
 
     public function register(RegisterUserRequest $request)
     {
-        $data = $request->validated(); 
+        $data = $request->validated();
         $result = $this->authUserService->register($data);
 
         return response()->json([
@@ -36,22 +37,14 @@ class AuthController extends Controller
         ], 201);
     }
 
-    public function login(Request $request)
+    public function login(LoginUserRequest $request)
     {
-        $request->validate([
-            'email' => 'required|email',
-            'password' => 'required|string',
-        ]);
+        $data = $this->authUserService->login(
+            $request->email,
+            $request->password
+        );
 
-        $user = User::where('email', $request->email)->first();
-
-        if (!$user || !Hash::check($request->password, $user->password)) {
-            return response()->json(['message' => 'Invalid credentials'], 401);
-        }
-
-        $token = $user->createToken('user-token')->plainTextToken;
-
-        return response()->json(['user' => $user, 'token' => $token]);
+        return response()->json($data, 200);
     }
 
     public function logout(Request $request)
@@ -64,70 +57,28 @@ class AuthController extends Controller
         }
     }
 
-    public function forgotPassword(Request $request)
+    public function forgotPassword(ForgotPasswordRequest $request)
     {
-        $request->validate(['email' => 'required|email|exists:users,email']);
-
-        $user = \App\Models\User::where('email', $request->email)->first();
-
-        if ($user->is_admin) {
-            return response()->json(['message' => 'Admins cannot reset password via API'], 403);
-        }
-
-        $token = Str::random(60);
-        DB::table('password_reset_tokens')->where('email', $request->email)->delete();
-        DB::table('password_reset_tokens')->insert([
-            'email' => $request->email,
-            'token' => $token,
-            'created_at' => now(),
-        ]);
+        $token = $this->forgotPasswordService->handle($request->validated()['email']);
 
         return response()->json([
             'message' => 'Password reset token generated successfully.',
             'token'   => $token,
-        ]);
+        ], 200);
     }
 
-    public function resetPassword(Request $request)
+    public function resetPassword(ResetPasswordRequest $request)
     {
-        $validator = Validator::make($request->all(), [
-            'email'    => 'required|email|exists:users,email',
-            'token'    => 'required|string',
-            'password' => 'required|string|min:6|confirmed',
-        ]);
+        $data = $request->validated();
 
-        if ($validator->fails()) {
-            return response()->json([
-                'message' => 'Validation failed',
-                'errors'  => $validator->errors()
-            ], 422);
-        }
+        $this->resetPasswordService->handle(
+            $data['email'],
+            $data['token'],
+            $data['password']
+        );
 
-        $email = $request->email;
-        $token = $request->token;
-
-        $user = \App\Models\User::where('email', $email)->first();
-
-        if ($user->is_admin) {
-            return response()->json([
-                'message' => 'Admins cannot reset password via API'
-            ], 403);
-        }
-
-        $tokenData = DB::table('password_reset_tokens')
-            ->where('email', $email)
-            ->where('token', $token)
-            ->first();
-
-        if (! $tokenData) {
-            return response()->json(['message' => 'Invalid or expired token'], 400);
-        }
-
-        $user->password = Hash::make($request->password);
-        $user->save();
-
-        DB::table('password_reset_tokens')->where('email', $email)->delete();
-
-        return response()->json(['message' => 'Password reset successful.']);
+        return response()->json([
+            'message' => 'Password reset successful.',
+        ], 200);
     }
 }

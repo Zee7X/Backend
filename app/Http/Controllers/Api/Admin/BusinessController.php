@@ -8,7 +8,7 @@ use App\Http\Requests\UpdateBusinessRequest;
 use App\Http\Resources\BusinessResource;
 use App\Services\BusinessService;
 use App\Models\Business;
-use Yajra\DataTables\Facades\DataTables;
+use Illuminate\Http\Request;
 
 class BusinessController extends Controller
 {
@@ -19,13 +19,9 @@ class BusinessController extends Controller
         $this->service = $service;
     }
 
-    public function index()
+    public function index(Request $request)
     {
-        $query = Business::with('category')->select('businesses.*');
-        return DataTables::of($query)
-            ->addColumn('category', fn(Business $b) => $b->category->name)
-            ->addColumn('logo_url', fn(Business $b) => $b->logo_path ? asset('storage/' . $b->logo_path) : null)
-            ->make(true);
+        return $this->service->getDataTable($request);
     }
 
     public function store(StoreBusinessRequest $request)
@@ -38,28 +34,16 @@ class BusinessController extends Controller
 
     public function update(UpdateBusinessRequest $request, Business $business)
     {
-        $data = $request->validated();
+        $updated = $this->service->update($business, $request->validated());
 
-        $updated = $this->service->update($business, $data);
-
-        return response()->json([
-            'message' => 'Business updated successfully.',
-            'data' => new BusinessResource($updated),
-        ]);
+        return (new BusinessResource($updated))
+            ->additional(['message' => 'Business has been updated successfully.']);
     }
 
     public function destroy(Business $business)
     {
-        try {
-            $this->service->delete($business);
-            return response()->json([
-                'message' => 'Business deleted successfully.'
-            ], 200);
-        } catch (\Exception $e) {
-            return response()->json([
-                'message' => 'Failed to delete Business.',
-                'error' => $e->getMessage()
-            ], 500);
-        }
+        $this->service->delete($business);
+
+        return response()->json(['message' => 'Business has been deleted successfully.']);
     }
 }
