@@ -34,8 +34,7 @@ A RESTful API project with **admin and user management**, **businesses**, **cate
 - PHP >= 8.1  
 - Composer  
 - MySQL / MariaDB  
-- Laravel 10.x  
-- Node.js & NPM (if using frontend)  
+- Laravel 10.x    
 
 ---
 
@@ -44,21 +43,14 @@ A RESTful API project with **admin and user management**, **businesses**, **cate
 1. Clone the repository:
 
 ```bash
-git clone https://github.com/username/project-name.git
-cd project-name
+git clone https://github.com/Zee7x/Backend.git
+cd Backend
 ````
 
 2. Install PHP dependencies:
 
 ```bash
 composer install
-```
-
-3. Install Node dependencies (if using frontend):
-
-```bash
-npm install
-npm run dev
 ```
 
 ---
@@ -118,8 +110,8 @@ The seeder creates a default admin account:
 
 | Field    | Value                                         |
 | -------- | --------------------------------------------- |
-| Email    | [admin@example.com](mailto:admin@example.com) |
-| Password | password123                                   |
+| Email    | [admin@test.com](mailto:admin@test.com) |
+| Password | password                                   |
 
 > Use these credentials to log in to admin endpoints.
 
