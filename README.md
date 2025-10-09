@@ -1,3 +1,7 @@
+Berikut versi README.md yang sudah diperbarui dengan tambahan instruksi **`php artisan storage:link`** untuk mengakses logo/gambar bisnis:
+
+---
+
 # Laravel Business & Bookmark API
 
 A RESTful API project with **admin and user management**, **businesses**, **categories**, and **user bookmarks** using Laravel 10 and Sanctum authentication.
@@ -6,35 +10,37 @@ A RESTful API project with **admin and user management**, **businesses**, **cate
 
 ## Table of Contents
 
-- [Features](#features)
-- [Requirements](#requirements)
-- [Installation](#installation)
-- [Environment Setup](#environment-setup)
-- [Database Setup](#database-setup)
-- [Running Migrations and Seeders](#running-migrations-and-seeders)
-- [Default Admin Credentials](#default-admin-credentials)
-- [Running the Application](#running-the-application)
-- [API Endpoints](#api-endpoints)
-- [License](#license)
+* [Features](#features)
+* [Requirements](#requirements)
+* [Installation](#installation)
+* [Environment Setup](#environment-setup)
+* [Database Setup](#database-setup)
+* [Running Migrations and Seeders](#running-migrations-and-seeders)
+* [Storage Link](#storage-link)
+* [Default Admin Credentials](#default-admin-credentials)
+* [Running the Application](#running-the-application)
+* [API Endpoints](#api-endpoints)
+* [License](#license)
 
 ---
 
 ## Features
 
-- Admin and user authentication using Laravel Sanctum.
-- CRUD for **Businesses** and **Categories** (Admin only).
-- User **Bookmarks** for businesses.
-- Business listing with slug-based route.
-- Clean architecture with service and repository layers.
+* Admin and user authentication using Laravel Sanctum.
+* CRUD for **Businesses** and **Categories** (Admin only).
+* User **Bookmarks** for businesses.
+* Business listing with slug-based route.
+* Upload and display business **logos/images**.
+* Clean architecture with service and repository layers.
 
 ---
 
 ## Requirements
 
-- PHP >= 8.1  
-- Composer  
-- MySQL / MariaDB  
-- Laravel 10.x    
+* PHP >= 8.1
+* Composer
+* MySQL / MariaDB
+* Laravel 10.x
 
 ---
 
@@ -45,7 +51,7 @@ A RESTful API project with **admin and user management**, **businesses**, **cate
 ```bash
 git clone https://github.com/Zee7x/Backend.git
 cd Backend
-````
+```
 
 2. Install PHP dependencies:
 
@@ -104,14 +110,27 @@ php artisan db:seed
 
 ---
 
+## Storage Link
+
+To make uploaded logos and images publicly accessible, create a symbolic link from `storage/app/public` to `public/storage`:
+
+```bash
+php artisan storage:link
+```
+
+> After this, uploaded logos can be accessed via URL:
+> `http://127.0.0.1:8000/storage/logos/{filename}`
+
+---
+
 ## Default Admin Credentials
 
 The seeder creates a default admin account:
 
-| Field    | Value                                         |
-| -------- | --------------------------------------------- |
+| Field    | Value                                   |
+| -------- | --------------------------------------- |
 | Email    | [admin@test.com](mailto:admin@test.com) |
-| Password | password                                   |
+| Password | password                                |
 
 > Use these credentials to log in to admin endpoints.
 
@@ -194,7 +213,7 @@ API base URL: `http://127.0.0.1:8000/api`
 
 You can import the API collection to Postman to test all endpoints:
 
-- Collection: [`postman/Backend Test.postman_collection.json`](postman/Backend Test.postman_collection.json)
+* Collection: [`postman/Backend Test.postman_collection.json`](postman/Backend Test.postman_collection.json)
 
 Steps:
 
@@ -202,7 +221,10 @@ Steps:
 2. Optionally, set environment variables for `base_url` and `Authorization` token.
 3. Start testing all admin and user API endpoints.
 
+---
 
 ## License
 
 This project is licensed under the MIT License. See the [LICENSE](LICENSE) file for details.
+
+---
