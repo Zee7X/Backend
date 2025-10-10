@@ -34,18 +34,18 @@ Route::middleware('auth:sanctum')->group(function () {
 
 //Admin
 Route::prefix('admin')->middleware(['auth:sanctum', 'is_admin'])->group(function () {
-    Route::get('businesses', [BusinessController::class, 'index']);       
+    Route::get('businesses', [BusinessController::class, 'index']);
     Route::post('businesses', [BusinessController::class, 'store']);
-    Route::put('businesses/{business}', [BusinessController::class, 'update']);    
-    Route::delete('businesses/{business}', [BusinessController::class, 'destroy']); 
+    Route::put('businesses/{business}', [BusinessController::class, 'update']);
+    Route::delete('businesses/{business}', [BusinessController::class, 'destroy']);
 
-    Route::get('categories', [CategoryController::class, 'index']);       
-    Route::post('categories', [CategoryController::class, 'store']);      
-    Route::put('categories/{category}', [CategoryController::class, 'update']); 
-    Route::delete('categories/{category}', [CategoryController::class, 'destroy']); 
-
+    Route::get('categories', [CategoryController::class, 'index']);
+    Route::post('categories', [CategoryController::class, 'store']);
+    Route::put('categories/{category}', [CategoryController::class, 'update']);
+    Route::delete('categories/{category}', [CategoryController::class, 'destroy']);
 });
 
 //User
-Route::get('businesses', [UserBusinessController::class, 'index']);           
+Route::get('businesses', [UserBusinessController::class, 'index']);
 Route::get('businesses/{business:slug}', [UserBusinessController::class, 'show']);
+Route::get('categories', [CategoryController::class, 'index']);
