@@ -1,4 +1,3 @@
-Berikut versi README.md yang sudah diperbarui dengan tambahan instruksi **`php artisan storage:link`** untuk mengakses logo/gambar bisnis:
 
 ---
 
@@ -17,6 +16,7 @@ A RESTful API project with **admin and user management**, **businesses**, **cate
 * [Database Setup](#database-setup)
 * [Running Migrations and Seeders](#running-migrations-and-seeders)
 * [Storage Link](#storage-link)
+* [Logo Assets](#logo-assets)
 * [Default Admin Credentials](#default-admin-credentials)
 * [Running the Application](#running-the-application)
 * [API Endpoints](#api-endpoints)
@@ -90,7 +90,7 @@ php artisan key:generate
 
 ## Database Setup
 
-Create a database in MySQL matching the `DB_DATABASE` in your `.env` file.
+Create a database in MySQL matching the `DB_DATABASE` value in your `.env` file.
 
 ---
 
@@ -112,7 +112,8 @@ php artisan db:seed
 
 ## Storage Link
 
-To make uploaded logos and images publicly accessible, create a symbolic link from `storage/app/public` to `public/storage`:
+To make uploaded logos and images publicly accessible, create a symbolic link from
+`storage/app/public` → `public/storage`:
 
 ```bash
 php artisan storage:link
@@ -120,6 +121,52 @@ php artisan storage:link
 
 > After this, uploaded logos can be accessed via URL:
 > `http://127.0.0.1:8000/storage/logos/{filename}`
+
+---
+
+## Logo Assets
+
+Business logo images are provided in a compressed file named `logos.zip`.
+Unzip and move them to the **storage** directory so they appear correctly in the app.
+
+1. Extract the `logos.zip` file:
+
+```bash
+unzip logos.zip
+```
+
+2. Move the extracted folder into the Laravel storage path:
+
+```bash
+mv logos storage/app/public/logos
+```
+
+3. After running `php artisan storage:link`, the public URL path will be:
+
+```
+public/storage/logos/
+```
+
+4. Verify the structure:
+
+```
+storage/
+ └── app/
+     └── public/
+         └── logos/
+             ├── restaurant1.jpg
+             ├── cafe1.jpg
+             ├── fitness1.jpg
+             └── ...
+```
+
+5. Set proper permissions if needed:
+
+```bash
+chmod -R 775 storage
+```
+
+> 💡 **Tip:** Do this step **before running seeders**, so all seeded businesses display their logo correctly.
 
 ---
 
