@@ -1,4 +1,3 @@
-
 ---
 
 # Laravel Business & Bookmark API
