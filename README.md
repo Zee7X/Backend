@@ -1,5 +1,3 @@
-Berikut versi README.md yang sudah diperbarui dengan tambahan instruksi **`php artisan storage:link`** untuk mengakses logo/gambar bisnis:
-
 ---
 
 # Laravel Business & Bookmark API
